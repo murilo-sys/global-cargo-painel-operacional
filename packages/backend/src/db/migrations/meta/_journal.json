@@ -1,0 +1,20 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1792517992433,
+      "tag": "0000_add_operational_metrics_fn",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1792519371259,
+      "tag": "0001_flippant_leech",
+      "breakpoints": true
+    }
+  ]
+}

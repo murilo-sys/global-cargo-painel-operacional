@@ -1,0 +1,2 @@
+-- Baseline migration: as tabelas freights, manifests, pickups, routes, vehicles_types
+    -- e o schema auth já existem previamente no banco de dados Supabase.
