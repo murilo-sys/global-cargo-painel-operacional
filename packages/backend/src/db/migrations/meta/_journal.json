@@ -15,6 +15,13 @@
       "when": 1792519371259,
       "tag": "0001_flippant_leech",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1792524450000,
+      "tag": "0002_add_hubs_table",
+      "breakpoints": true
     }
   ]
 }

@@ -92,3 +92,12 @@ export const routesTable = pgTable("routes", {
     .references(() => vehicleTypesTable.id),
   hubs: text("hubs").notNull().array()
 });
+
+
+export const hubsTable = pgTable("hubs", {
+  code: text("code").primaryKey(),
+  color: text("color").notNull(),
+  region: text("region").notNull(),
+  modal: text("modal").notNull().default("rodo"),
+  is_active: boolean("is_active").default(true)
+});
