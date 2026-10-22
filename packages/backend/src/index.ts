@@ -1,5 +1,8 @@
 import "server-only";
+import OperationalMetricsRepository from "./repositories/operational-metrics.repository";
+import GetOperationalMetricsUseCase from "./use-cases/get-operational-metrics";
 
-export function firstCommit() {
-  return "First commit";
-}
+const getOperationalMetricsUseCase = new GetOperationalMetricsUseCase(new OperationalMetricsRepository());
+
+export { getOperationalMetricsUseCase };
+export type * from "./types/dashboardOperationalMetrics";

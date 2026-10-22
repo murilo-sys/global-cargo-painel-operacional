@@ -1,0 +1,1 @@
+ALTER TABLE "pickups" ALTER COLUMN "destination_hub" DROP NOT NULL;

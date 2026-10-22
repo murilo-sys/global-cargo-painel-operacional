@@ -22,6 +22,132 @@
       "when": 1792524450000,
       "tag": "0002_add_hubs_table",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1792587983430,
+      "tag": "0003_right_proudstar",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1792588409722,
+      "tag": "0004_glamorous_warhawk",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1792589908212,
+      "tag": "0005_unique_baron_strucker",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1792590057361,
+      "tag": "0006_chief_lyja",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1792590168511,
+      "tag": "0007_tiny_blacklash",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1792590644442,
+      "tag": "0008_fluffy_microbe",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1792590680222,
+      "tag": "0009_friendly_groot",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1792591362327,
+      "tag": "0010_neat_masque",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1792591531781,
+      "tag": "0011_harsh_impossible_man",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1792601108794,
+      "tag": "0012_dashing_vapor",
+      "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1792602158059,
+      "tag": "0013_complex_northstar",
+      "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1792602276336,
+      "tag": "0014_petite_luckman",
+      "breakpoints": true
+    },
+    {
+      "idx": 15,
+      "version": "7",
+      "when": 1792676048556,
+      "tag": "0015_update_operational_metrics_fn",
+      "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1792688426816,
+      "tag": "0016_create_operational_freights_view",
+      "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1792688635798,
+      "tag": "0017_empty_junta",
+      "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1792691568259,
+      "tag": "0018_update_dashboard_fn_use_view",
+      "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1792698170709,
+      "tag": "0019_create_operational_manifests_view",
+      "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1792698464749,
+      "tag": "0020_create_operational_pickups_view",
+      "breakpoints": true
     }
   ]
 }

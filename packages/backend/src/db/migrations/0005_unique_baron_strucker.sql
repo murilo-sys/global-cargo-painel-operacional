@@ -1,0 +1,1 @@
+ALTER TABLE "freights" ALTER COLUMN "issuance_status" DROP NOT NULL;

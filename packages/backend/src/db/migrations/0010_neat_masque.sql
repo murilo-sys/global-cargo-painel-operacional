@@ -1,0 +1,1 @@
+-- Migration intermediária descartada em favor da composite key na 0011

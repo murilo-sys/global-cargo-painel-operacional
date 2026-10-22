@@ -1,0 +1,1 @@
+ALTER TABLE "manifests" RENAME COLUMN "total_invoices_values" TO "total_invoices_value";

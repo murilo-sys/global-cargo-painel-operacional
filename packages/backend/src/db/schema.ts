@@ -7,7 +7,8 @@ import {
   timestamp,
   boolean,
   uuid,
-  pgSchema
+  pgSchema,
+  primaryKey
 } from "drizzle-orm/pg-core";
 
 export const authSchema = pgSchema("auth");
@@ -18,21 +19,20 @@ export const usersTable = authSchema.table("users", {
 
 export const freightsTable = pgTable("freights", {
   id: integer("id").primaryKey(),
-  destination_hub: text("destination_hub").notNull(),
-  origin_hub: text("origin_hub").notNull(),
+  destination_hub: text("destination_hub"),
+  origin_hub: text("origin_hub"),
   status: text("status").notNull(),
-  issuance_status: text("issuance_status").notNull(),
   modal: text("modal").notNull(),
   emission_type: text("emission_type").notNull(),
   freight_type: text("freight_type").notNull(),
-  current_location: text("current_location").notNull(),
-  cte_number: integer("cte_number").notNull(),
-  minute_number: integer("minute_number").notNull(),
+  current_location: text("current_location"),
+  cte_number: integer("cte_number"),
+  minute_number: integer("minute_number"),
   weight_kg: doublePrecision("weight_kg").notNull(),
   freight_weight: doublePrecision("freight_weight").notNull(),
   volume_m3: doublePrecision("volume_m3").notNull(),
   invoice_value: doublePrecision("invoice_value").notNull(),
-  updated_at: date("updated_at").notNull(),
+  updated_at: date("updated_at"),
   last_synced_at: timestamp("last_synced_at").notNull(),
   is_disabled: boolean("is_disabled").default(false)
 });
@@ -42,9 +42,9 @@ export const manifestsTable = pgTable("manifests", {
   code: integer("code").notNull(),
   total_m3: doublePrecision("total_m3").notNull(),
   total_weight_kg: doublePrecision("total_weight_kg").notNull(),
-  total_invoices_values: doublePrecision("total_invoices_values").notNull(),
-  unloading_places: text("unloading_places").array().notNull(),
-  estimated_arrival: timestamp("estimated_arrival").notNull(),
+  total_invoices_value: doublePrecision("total_invoices_value").notNull(),
+  unloading_places: text("unloading_places").array(),
+  estimated_arrival: timestamp("estimated_arrival"),
   status: text("status").notNull(),
   vehicle_plate: text("vehicle_plate").notNull(),
   origin_hub: text("origin_hub").notNull()
@@ -56,21 +56,25 @@ export const pickupsTable = pgTable("pickups", {
   volume_m3: doublePrecision("volume_m3").notNull(),
   weight_kg: doublePrecision("weight_kg").notNull(),
   invoice_value: doublePrecision("invoice_value").notNull(),
-  destination_hub: text("destination_hub").notNull(),
-  service_date: timestamp("service_date").notNull(),
+  destination_hub: text("destination_hub"),
+  service_date: timestamp("service_date"),
   request_date: timestamp("request_date").notNull(),
   status: text("status").notNull(),
   filial: text("filial").notNull()
 });
 
-export const manifestFreightsTable = pgTable("manifest_freights", {
-  manifest_id: integer("manifest_id")
-    .notNull()
-    .references(() => manifestsTable.id, { onDelete: "cascade" }),
-  freight_id: integer("freight_id")
-    .notNull()
-    .references(() => freightsTable.id, { onDelete: "cascade" })
-});
+export const manifestFreightsTable = pgTable(
+  "manifest_freights",
+  {
+    manifest_id: integer("manifest_id")
+      .notNull()
+      .references(() => manifestsTable.id, { onDelete: "cascade" }),
+    freight_id: integer("freight_id")
+      .notNull()
+      .references(() => freightsTable.id, { onDelete: "cascade" })
+  },
+  (table) => [primaryKey({ columns: [table.manifest_id, table.freight_id] })]
+);
 
 export const vehicleTypesTable = pgTable("vehicles_types", {
   id: integer("id").primaryKey(),
@@ -93,11 +97,17 @@ export const routesTable = pgTable("routes", {
   hubs: text("hubs").notNull().array()
 });
 
-
 export const hubsTable = pgTable("hubs", {
   code: text("code").primaryKey(),
   color: text("color").notNull(),
   region: text("region").notNull(),
   modal: text("modal").notNull().default("rodo"),
   is_active: boolean("is_active").default(true)
+});
+
+export const syncHistoryTable = pgTable("sync_history", {
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+  created_at: timestamp("created_at").defaultNow(),
+  status: text("status"),
+  error: text("error").array()
 });

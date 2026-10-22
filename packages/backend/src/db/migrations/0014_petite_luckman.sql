@@ -1,0 +1,1 @@
+ALTER TABLE "pickups" ALTER COLUMN "service_date" DROP NOT NULL;

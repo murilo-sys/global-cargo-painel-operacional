@@ -1,15 +1,10 @@
 import OperationalMetricsRepository from "../repositories/operational-metrics.repository";
+import type { DashboardOperationalMetrics } from "../types/dashboardOperationalMetrics";
 
 export default class GetOperationalMetricsUseCase {
   constructor(private repository: OperationalMetricsRepository) {}
 
-  async get() {
-    return await this.repository.getMetrics();
+  async dashboardMetrics(): Promise<DashboardOperationalMetrics> {
+    return await this.repository.getDashboardMetrics();
   }
 }
-
-(async () => {
-  const operationalMetrics = new GetOperationalMetricsUseCase(new OperationalMetricsRepository());
-
-  console.log(await operationalMetrics.get());
-})();
