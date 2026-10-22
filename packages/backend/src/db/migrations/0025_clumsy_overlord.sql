@@ -1,0 +1,1 @@
+-- Coluna issuance_status já foi criada como coluna gerada e indexada na migration 0022

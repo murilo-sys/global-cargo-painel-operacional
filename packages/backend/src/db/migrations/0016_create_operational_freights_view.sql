@@ -21,3 +21,6 @@ CREATE OR REPLACE VIEW vw_operational_freights AS
     WHERE is_disabled = false
       AND status IN ('Pendente', 'Standby', 'Manifestado')
       AND freight_type IN ('CT-e', 'Minuta');
+      -- and updated_at >= p_date::timestamptz
+      -- and destination_hub <> 'SAO'
+      -- current_location = 'GLOBAL AIR CARGO LTDA - SAO'

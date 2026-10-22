@@ -148,6 +148,55 @@
       "when": 1792698464749,
       "tag": "0020_create_operational_pickups_view",
       "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1792698826045,
+      "tag": "0021_update_dashboard_fn_use_view",
+      "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1792699803589,
+      "tag": "0022_add_issuance_status_column_freights",
+      "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1792699819779,
+      "tag": "0023_update_dashboard_fn_use_view",
+      "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1792699927153,
+      "tag": "0024_vw_add_issuance_status_column",
+      "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "7",
+      "when": 1792699988270,
+      "tag": "0025_clumsy_overlord",
+      "breakpoints": true
+    },
+    {
+      "idx": 26,
+      "version": "7",
+      "when": 1792700009422,
+      "tag": "0026_update_dashboard_fn_use_view",
+      "breakpoints": true
+    },
+    {
+      "idx": 27,
+      "version": "7",
+      "when": 1792701000000,
+      "tag": "0027_fix_views_missing_columns",
+      "breakpoints": true
     }
   ]
 }

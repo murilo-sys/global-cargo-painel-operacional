@@ -23,6 +23,7 @@ export const freightsTable = pgTable("freights", {
   origin_hub: text("origin_hub"),
   status: text("status").notNull(),
   modal: text("modal").notNull(),
+  issuance_status: text("issuance_status").notNull(),
   emission_type: text("emission_type").notNull(),
   freight_type: text("freight_type").notNull(),
   current_location: text("current_location"),
