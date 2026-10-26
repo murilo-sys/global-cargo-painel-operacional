@@ -197,6 +197,34 @@
       "when": 1792701000000,
       "tag": "0027_fix_views_missing_columns",
       "breakpoints": true
+    },
+    {
+      "idx": 28,
+      "version": "7",
+      "when": 1792761295947,
+      "tag": "0028_fn_update_params_default",
+      "breakpoints": true
+    },
+    {
+      "idx": 29,
+      "version": "7",
+      "when": 1792762000000,
+      "tag": "0029_fn_pickups_date_sp_timezone",
+      "breakpoints": true
+    },
+    {
+      "idx": 30,
+      "version": "7",
+      "when": 1792763000000,
+      "tag": "0030_fn_freights_date_5_days",
+      "breakpoints": true
+    },
+    {
+      "idx": 31,
+      "version": "7",
+      "when": 1793016000000,
+      "tag": "0031_fn_freights_date_as_date",
+      "breakpoints": true
     }
   ]
 }

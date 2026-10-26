@@ -1,6 +1,6 @@
 CREATE OR REPLACE FUNCTION fn_get_operational_dashboard_metrics(
           p_freights_date TIMESTAMPTZ DEFAULT (NOW() - INTERVAL '6 days'),
-          p_pickups_date TIMESTAMPTZ DEFAULT (NOW() - INTERVAL '6 days'),
+          p_pickups_date TIMESTAMPTZ DEFAULT (NOW() - INTERVAL '7 days'),
           p_current_filial TEXT DEFAULT 'SAO GLOBAL CARGO',
           p_current_location TEXT DEFAULT 'GLOBAL AIR CARGO LTDA - SAO',
           p_current_hub TEXT DEFAULT 'SAO'
