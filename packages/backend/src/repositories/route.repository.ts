@@ -1,5 +1,6 @@
-import { sql } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { db } from "../db/connection";
+import { routesTable } from "../db/schema";
 import { Route, type RouteHubData } from "../domain/Route.domain";
 
 export interface CreateRouteDto {
@@ -43,20 +44,25 @@ export class RouteRepository {
   }
 
   async createRoute(data: CreateRouteDto): Promise<void> {
-    if (data.createdBy) {
-      await db.execute(
-        sql`INSERT INTO routes (name, vehicle_code, hubs, created_by) 
-            VALUES (${data.name}, ${data.vehicle}, ${data.hubs}, ${data.createdBy}::uuid)`
-      );
-    } else {
-      await db.execute(
-        sql`INSERT INTO routes (name, vehicle_code, hubs) 
-            VALUES (${data.name}, ${data.vehicle}, ${data.hubs})`
-      );
+    try {
+      await db.insert(routesTable).values({
+        name: data.name,
+        vehicle_code: data.vehicle,
+        hubs: data.hubs,
+        created_by: data.createdBy ?? null
+      });
+    } catch (error) {
+      console.error("[RouteRepository.createRoute] Erro ao criar rota:", error);
+      throw error;
     }
   }
 
   async deleteRoute(id: string): Promise<void> {
-    await db.execute(sql`DELETE FROM routes WHERE id = ${id}::uuid`);
+    try {
+      await db.delete(routesTable).where(eq(routesTable.id, id));
+    } catch (error) {
+      console.error("[RouteRepository.deleteRoute] Erro ao deletar rota:", error);
+      throw error;
+    }
   }
 }

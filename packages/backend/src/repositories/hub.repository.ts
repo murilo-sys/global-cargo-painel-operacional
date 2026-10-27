@@ -18,7 +18,8 @@ export class HubRepository {
 
       const hubs = records.map((h) => h.code);
       return hubs.length > 0 ? hubs : ["SAO"];
-    } catch {
+    } catch (error) {
+      console.error("[HubRepository.listAllHubs] Erro ao listar hubs:", error);
       return ["SAO"];
     }
   }
