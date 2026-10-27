@@ -1,0 +1,122 @@
+name: Cron Sync ESL
+
+on:
+  # schedule:
+  #   - cron: "0 */3 * * *"
+  workflow_dispatch:
+
+jobs:
+  create-sync-history:
+    runs-on: ubuntu-latest
+    outputs:
+      sync_id: ${{ steps.create.outputs.sync_id }}
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Instalar pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "pnpm"
+
+      - name: Instalar dependências
+        run: pnpm install --frozen-lockfile
+
+      - id: create
+        run: |
+          ID=$(pnpm --filter web exec tsx --conditions react-server src/scripts/startSync.ts)
+          echo "sync_id=$ID" >> "$GITHUB_OUTPUT"
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          ESL_TOKEN: ${{ secrets.ESL_TOKEN }}
+          ESL_URL_PICKUPS: ${{ secrets.ESL_URL_PICKUPS }}
+          ESL_URL_MANIFEST: ${{ secrets.ESL_URL_MANIFEST }}
+          ESL_URL_FREIGHTS: ${{ secrets.ESL_URL_FREIGHTS }}
+          TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
+          URL_ACTION_GITHUB: ${{ secrets.URL_ACTION_GITHUB }}
+
+  sync-reports:
+    name: Sync ${{ matrix.report }}
+    needs: create-sync-history
+    runs-on: ubuntu-latest
+    timeout-minutes: 15 # 15 minutes timeout
+
+    concurrency:
+      group: sync-job
+      cancel-in-progress: false
+
+    strategy:
+      fail-fast: false # If some report break, still running
+      max-parallel: 1 # Runs 1 per time
+      matrix:
+        report: [freights, manifests, pickups]
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Instalar pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "pnpm"
+
+      - name: Instalar dependências
+        run: pnpm install --frozen-lockfile
+
+      - name: Executar sincronização de ${{ matrix.report }}
+        run: pnpm --filter web exec tsx --conditions react-server src/scripts/syncReports.ts ${{ matrix.report }}
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          ESL_TOKEN: ${{ secrets.ESL_TOKEN }}
+          ESL_URL_PICKUPS: ${{ secrets.ESL_URL_PICKUPS }}
+          ESL_URL_MANIFEST: ${{ secrets.ESL_URL_MANIFEST }}
+          ESL_URL_FREIGHTS: ${{ secrets.ESL_URL_FREIGHTS }}
+          TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
+          URL_ACTION_GITHUB: ${{ secrets.URL_ACTION_GITHUB }}
+
+  completed-sync-history:
+    needs: [create-sync-history, sync-reports]
+    if: ${{ !cancelled() && needs.create-sync-history.result == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Instalar pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "pnpm"
+
+      - name: Instalar dependências
+        run: pnpm install --frozen-lockfile
+
+      - run: pnpm --filter web exec tsx --conditions react-server src/scripts/finishSync.ts ${{ needs.create-sync-history.outputs.sync_id }} ${{ needs.sync-reports.result }}
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          ESL_TOKEN: ${{ secrets.ESL_TOKEN }}
+          ESL_URL_PICKUPS: ${{ secrets.ESL_URL_PICKUPS }}
+          ESL_URL_MANIFEST: ${{ secrets.ESL_URL_MANIFEST }}
+          ESL_URL_FREIGHTS: ${{ secrets.ESL_URL_FREIGHTS }}
+          TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
+          URL_ACTION_GITHUB: ${{ secrets.URL_ACTION_GITHUB }}
