@@ -1,6 +1,27 @@
 import { sql } from "drizzle-orm";
 import { db } from "../db/connection";
+import { freightsTable } from "../db/schema";
 import { Freight } from "../domain/Freight.domain";
+
+export interface FreightInsertDto {
+  id: number;
+  destination_hub: string | null;
+  origin_hub: string | null;
+  status: string;
+  modal: string;
+  emission_type: string;
+  freight_type: string;
+  current_location: string | null;
+  cte_number: number | null;
+  minute_number: number | null;
+  weight_kg: number;
+  freight_weight: number;
+  volume_m3: number;
+  invoice_value: number;
+  updated_at: string | null;
+  last_synced_at: Date;
+  is_disabled?: boolean;
+}
 
 export interface ListMocarFreightsParams {
   page: number;
@@ -152,6 +173,55 @@ export class FreightRepository {
       );
     } catch (error) {
       console.error("[FreightRepository.updateDisabledStatus] Erro ao atualizar status do frete:", error);
+      throw error;
+    }
+  }
+
+  async upsertMany(freights: FreightInsertDto[]): Promise<void> {
+    if (freights.length === 0) return;
+    const CHUNK_SIZE = 500;
+    try {
+      for (let i = 0; i < freights.length; i += CHUNK_SIZE) {
+        const chunk = freights.slice(i, i + CHUNK_SIZE);
+        await db
+          .insert(freightsTable)
+          .values(chunk)
+          .onConflictDoUpdate({
+            target: freightsTable.id,
+            set: {
+              destination_hub: sql`excluded.destination_hub`,
+              origin_hub: sql`excluded.origin_hub`,
+              status: sql`excluded.status`,
+              modal: sql`excluded.modal`,
+              emission_type: sql`excluded.emission_type`,
+              freight_type: sql`excluded.freight_type`,
+              current_location: sql`excluded.current_location`,
+              cte_number: sql`excluded.cte_number`,
+              minute_number: sql`excluded.minute_number`,
+              weight_kg: sql`excluded.weight_kg`,
+              freight_weight: sql`excluded.freight_weight`,
+              volume_m3: sql`excluded.volume_m3`,
+              invoice_value: sql`excluded.invoice_value`,
+              updated_at: sql`excluded.updated_at`,
+              last_synced_at: sql`excluded.last_synced_at`
+            }
+          });
+      }
+    } catch (error) {
+      console.error("[FreightRepository.upsertMany] Erro ao sincronizar fretes:", error);
+      throw error;
+    }
+  }
+
+  async deleteMissing(updatedAtGte: string, lastSyncedAtLt: string): Promise<void> {
+    try {
+      await db.execute(
+        sql`DELETE FROM freights 
+            WHERE updated_at >= ${updatedAtGte}::date 
+              AND last_synced_at < ${lastSyncedAtLt}::timestamp`
+      );
+    } catch (error) {
+      console.error("[FreightRepository.deleteMissing] Erro ao deletar fretes ausentes:", error);
       throw error;
     }
   }

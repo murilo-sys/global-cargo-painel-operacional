@@ -1,26 +1,24 @@
-import syncReport from "@/services/syncReport.service";
-import { ReportsType } from "@/types/reportSync";
+import { syncReportUseCase, type SyncReportType } from "@roteirizador/backend";
 
-const VALIDS_TYPES: ReportsType[] = ["freights", "manifests", "pickups"];
+const VALIDS_TYPES: SyncReportType[] = ["freights", "manifests", "pickups"];
 
 async function main() {
-  const reportType = process.argv[2] as ReportsType;
+  const reportType = process.argv[2] as SyncReportType;
 
-  // Fail-fast if the argument isn't valid
   if (!reportType || !VALIDS_TYPES.includes(reportType)) {
-    console.error(`[CLI] Invalid report: ${reportType}`);
+    console.error(`[CLI] Invalid report type: ${reportType}`);
     process.exit(1);
   }
 
   const startTime = Date.now();
 
   try {
-    await syncReport(reportType);
+    await syncReportUseCase.execute(reportType);
     const duration = ((Date.now() - startTime) / 1000).toFixed(2);
-    console.log(`[CLI] Sync ${reportType} concluided successfuly on ${duration}s.`);
+    console.log(`[CLI] Sync ${reportType} completed successfully in ${duration}s.`);
     process.exit(0);
   } catch (error) {
-    console.error(`[CLI] Fatal error, Report: ${reportType}:`, error);
+    console.error(`[CLI] Fatal error during sync of ${reportType}:`, error);
     process.exit(1);
   }
 }

@@ -1,9 +1,9 @@
-import getLastSync from "@/services/operational/dashboard/syncs/lastSync.action";
+import { getLastSyncUseCase } from "@roteirizador/backend";
 import SyncButton from "./SyncButton";
 import SyncTime from "./SyncTime";
 
 export default async function Sync() {
-  const lastSync = await getLastSync();
+  const lastSync = await getLastSyncUseCase.execute();
 
   return (
     <div className="flex flex-col justify-between items-center">

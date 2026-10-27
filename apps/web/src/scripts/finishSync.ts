@@ -1,18 +1,18 @@
-import { completedSync } from "@/services/operational/dashboard/syncs/completedSync";
+import { finishSyncUseCase } from "@roteirizador/backend";
 
 async function finishSync() {
   const id = Number(process.argv[2]);
   const matrixResult = process.argv[3] === "success" ? process.argv[3] : "error";
 
   if (!Number.isInteger(id)) {
-    console.error("[CLI] Invalid id");
+    console.error("[CLI] Invalid id:", process.argv[2]);
     process.exit(1);
   }
 
   try {
-    await completedSync(id, matrixResult);
+    await finishSyncUseCase.execute(id, matrixResult);
   } catch (error) {
-    console.error("[CLI] Failed to update status ID", id, error);
+    console.error("[CLI] Failed to update status for ID:", id, error);
     process.exit(1);
   }
 }

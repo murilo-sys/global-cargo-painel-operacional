@@ -1,11 +1,25 @@
 import { sql } from "drizzle-orm";
 import { db } from "../db/connection";
+import { pickupsTable } from "../db/schema";
 import { Pickup } from "../domain/Pickup.domain";
 
 export interface ListPickupsParams {
   status?: "Em trânsito" | "Coletada";
   daysAgo?: number;
   filial?: string;
+}
+
+export interface PickupInsertDto {
+  id: number;
+  code: number;
+  volume_m3: number;
+  weight_kg: number;
+  invoice_value: number;
+  destination_hub: string | null;
+  service_date: Date | null;
+  request_date: Date;
+  status: string;
+  filial: string;
 }
 
 export class PickupRepository {
@@ -63,6 +77,36 @@ export class PickupRepository {
     } catch (error) {
       console.error("[PickupRepository.listPickups] Erro ao listar coletas:", error);
       return [];
+    }
+  }
+
+  async upsertMany(pickups: PickupInsertDto[]): Promise<void> {
+    if (pickups.length === 0) return;
+    const CHUNK_SIZE = 500;
+    try {
+      for (let i = 0; i < pickups.length; i += CHUNK_SIZE) {
+        const chunk = pickups.slice(i, i + CHUNK_SIZE);
+        await db
+          .insert(pickupsTable)
+          .values(chunk)
+          .onConflictDoUpdate({
+            target: pickupsTable.id,
+            set: {
+              code: sql`excluded.code`,
+              volume_m3: sql`excluded.volume_m3`,
+              weight_kg: sql`excluded.weight_kg`,
+              invoice_value: sql`excluded.invoice_value`,
+              destination_hub: sql`excluded.destination_hub`,
+              service_date: sql`excluded.service_date`,
+              request_date: sql`excluded.request_date`,
+              status: sql`excluded.status`,
+              filial: sql`excluded.filial`
+            }
+          });
+      }
+    } catch (error) {
+      console.error("[PickupRepository.upsertMany] Erro ao salvar coletas:", error);
+      throw error;
     }
   }
 }

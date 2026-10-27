@@ -1,11 +1,11 @@
-import { newSync } from "@/services/operational/dashboard/syncs/newSync.service";
+import { startSyncUseCase } from "@roteirizador/backend";
 
 async function startSync() {
   try {
-    const id = await newSync();
+    const id = await startSyncUseCase.execute();
     console.log(id);
   } catch (error) {
-    console.error("[CLI] Failed to create ID", error);
+    console.error("[CLI] Failed to create sync ID:", error);
     process.exit(1);
   }
 }
