@@ -77,24 +77,20 @@ export const manifestFreightsTable = pgTable(
   (table) => [primaryKey({ columns: [table.manifest_id, table.freight_id] })]
 );
 
-export const vehicleTypesTable = pgTable("vehicles_types", {
-  id: integer("id").primaryKey(),
+export const vehicleTypesTable = pgTable("vehicle_types", {
+  id: uuid("id").primaryKey().defaultRandom(),
   name: text("name").notNull(),
-  max_weight_kg: integer("max_weight_kg").notNull(),
-  max_volume_m3: integer("max_volume_m3").notNull(),
+  max_weight_kg: doublePrecision("max_weight_kg").notNull(),
+  max_volume_m3: doublePrecision("max_volume_m³").notNull(),
   is_active: boolean("is_active").default(true)
 });
 
 export const routesTable = pgTable("routes", {
-  id: integer("id").primaryKey(),
+  id: uuid("id").primaryKey().defaultRandom(),
   name: text("name").notNull(),
   created_at: timestamp("created_at").defaultNow(),
-  created_by: uuid("created_by")
-    .notNull()
-    .references(() => usersTable.id),
-  vehicle_code: integer("vehicle_code")
-    .notNull()
-    .references(() => vehicleTypesTable.id),
+  created_by: uuid("created_by").references(() => usersTable.id),
+  vehicle_code: text("vehicle_code").notNull(),
   hubs: text("hubs").notNull().array()
 });
 
