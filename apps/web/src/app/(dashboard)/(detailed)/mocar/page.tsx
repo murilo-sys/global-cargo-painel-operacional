@@ -46,9 +46,17 @@ async function MocarContent({ searchParams }: MocarProps) {
 
   return (
     <div className="flex flex-col gap-5">
-      <h2 className="font-bold text-2xl animate-in fade-in slide-in-from-left-4 duration-800">
-        Mocar {hub ? `- ${hub}` : ""}
-      </h2>
+      <div className="flex flex-row items-center gap-4">
+        <Link
+          href="/"
+          className="text-zinc-400 hover:text-white transition-colors flex items-center gap-1 text-sm"
+        >
+          🠔 Voltar ao Painel
+        </Link>
+        <h2 className="font-bold text-2xl animate-in fade-in slide-in-from-left-4 duration-800">
+          Mocar {hub ? `- ${hub}` : ""}
+        </h2>
+      </div>
 
       <FreightTable data={serializedData} />
 
