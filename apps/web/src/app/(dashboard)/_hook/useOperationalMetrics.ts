@@ -1,7 +1,7 @@
-import type { DashboardOperationalMetrics, Hub } from "@roteirizador/backend";
+import type { DashboardOperationalMetrics, HubMetrics } from "@roteirizador/backend";
 import { useMemo, useState } from "react";
 
-export interface DashboardHub extends Hub {
+export interface DashboardHub extends HubMetrics {
   total: {
     m3: number;
     realWeight: number;
