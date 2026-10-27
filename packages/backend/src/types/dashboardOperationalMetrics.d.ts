@@ -43,7 +43,7 @@ export interface HubCargoValues extends HubTransportValues {
   freightWeight: number;
 }
 
-export interface Hub {
+export interface HubMetrics {
   code: string;
   color: string;
   pickups: HubPickupsStatus;
@@ -56,5 +56,5 @@ export interface DashboardOperationalMetrics {
   pickups: PickupsMetrics;
   issuances: IssuancesMetrics;
   manifests: ManifestMetrics;
-  hubs: Hub[];
+  hubs: HubMetrics[];
 }
