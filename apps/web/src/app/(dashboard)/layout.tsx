@@ -1,11 +1,18 @@
 import Logout from "@/components/layout/Sidebar/Logout/Logout";
 import Sidebar from "@/components/layout/Sidebar/Sidebar";
+import Sync from "@/components/layout/Sidebar/sync/Sync";
+import AutoRefresherData from "@/components/refresher/AutoRefresherData";
+import { Suspense } from "react";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="relative min-h-dvh bg-blue-950 text-white flex flex-row">
+      <AutoRefresherData />
       <div className="fixed flex flex-col items-center gap-3 left-4 top-1/2 -translate-y-1/2 animate-in fade-in duration-1000 z-40">
         <Sidebar />
+        <Suspense fallback={null}>
+          <Sync />
+        </Suspense>
         <Logout />
       </div>
 
