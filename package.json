@@ -8,9 +8,9 @@
     "build": "pnpm --filter web build",
     "lint": "pnpm --filter web lint",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "sync": "pnpm --filter web sync",
-    "sync:all": "pnpm --filter web sync:all",
-    "sync-url": "pnpm --filter web sync-url",
+    "sync": "pnpm --filter @roteirizador/backend sync",
+    "sync:all": "pnpm --filter @roteirizador/backend sync:all",
+    "sync-url": "pnpm --filter @roteirizador/backend sync-url",
     "db:migrate": "pnpm --filter @roteirizador/backend db:migrate"
   },
   "keywords": [],

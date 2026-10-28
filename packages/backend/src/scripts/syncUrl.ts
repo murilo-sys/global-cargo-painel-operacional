@@ -1,4 +1,4 @@
-import { syncReportUseCase, closeDatabaseConnection, type SyncReportType } from "@roteirizador/backend";
+import { syncReportUseCase, closeDatabaseConnection, type SyncReportType } from "../index";
 
 const VALIDS_TYPES: SyncReportType[] = ["freights", "manifests", "pickups"];
 

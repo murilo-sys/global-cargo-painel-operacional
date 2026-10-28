@@ -1,4 +1,4 @@
-import { finishSyncUseCase, closeDatabaseConnection } from "@roteirizador/backend";
+import { finishSyncUseCase, closeDatabaseConnection } from "../index";
 
 async function finishSync() {
   const id = Number(process.argv[2]);

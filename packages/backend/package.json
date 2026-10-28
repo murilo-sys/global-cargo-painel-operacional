@@ -16,7 +16,12 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "tsx --env-file=.env src/db/migrate.ts"
+    "db:migrate": "tsx --env-file=.env src/db/migrate.ts",
+    "sync": "tsx --conditions react-server src/scripts/syncReports.ts",
+    "sync:all": "tsx --conditions react-server src/scripts/syncReports.ts freights && tsx --conditions react-server src/scripts/syncReports.ts manifests && tsx --conditions react-server src/scripts/syncReports.ts pickups",
+    "sync-url": "tsx --conditions react-server src/scripts/syncUrl.ts",
+    "sync:start": "tsx --conditions react-server src/scripts/startSync.ts",
+    "sync:finish": "tsx --conditions react-server src/scripts/finishSync.ts"
   },
   "keywords": [],
   "author": "",
@@ -34,6 +39,7 @@
   "devDependencies": {
     "@types/node": "^20.19.43",
     "drizzle-kit": "^0.31.11",
+    "tsx": "^4.23.15",
     "typescript": "^7.0.2",
     "vitest": "^5.0.5"
   }

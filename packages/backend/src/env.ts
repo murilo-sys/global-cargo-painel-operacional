@@ -7,26 +7,28 @@ import z from "zod";
 const currentFile = fileURLToPath(import.meta.url);
 const currentDir = path.dirname(currentFile);
 
-// Lista de diretórios possíveis onde os arquivos .env / .env.local podem estar no monorepo
-const searchDirs = [
-  process.cwd(),
-  path.resolve(process.cwd(), ".."),
-  path.resolve(process.cwd(), "../.."),
-  path.resolve(process.cwd(), "apps/web"),
-  path.resolve(process.cwd(), "packages/backend"),
-  path.resolve(currentDir, ".."),
-  path.resolve(currentDir, "../../.."),
-  path.resolve(currentDir, "../../../apps/web")
-];
+// Apenas busca arquivos .env no disco se as variáveis essenciais ainda não estiverem no process.env (ex: scripts CLI locais)
+if (!process.env.DATABASE_URL) {
+  const searchDirs = [
+    process.cwd(),
+    path.resolve(/*turbopackIgnore: true*/ process.cwd(), ".."),
+    path.resolve(/*turbopackIgnore: true*/ process.cwd(), "../.."),
+    path.resolve(/*turbopackIgnore: true*/ process.cwd(), "apps/web"),
+    path.resolve(/*turbopackIgnore: true*/ process.cwd(), "packages/backend"),
+    path.resolve(/*turbopackIgnore: true*/ currentDir, ".."),
+    path.resolve(/*turbopackIgnore: true*/ currentDir, "../../.."),
+    path.resolve(/*turbopackIgnore: true*/ currentDir, "../../../apps/web")
+  ];
 
-for (const dir of searchDirs) {
-  const envLocal = path.join(dir, ".env.local");
-  if (fs.existsSync(envLocal)) {
-    dotenv.config({ path: envLocal });
-  }
-  const envFile = path.join(dir, ".env");
-  if (fs.existsSync(envFile)) {
-    dotenv.config({ path: envFile });
+  for (const dir of searchDirs) {
+    const envLocal = path.join(dir, ".env.local");
+    if (fs.existsSync(envLocal)) {
+      dotenv.config({ path: envLocal });
+    }
+    const envFile = path.join(dir, ".env");
+    if (fs.existsSync(envFile)) {
+      dotenv.config({ path: envFile });
+    }
   }
 }
 

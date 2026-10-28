@@ -1,4 +1,4 @@
-import { startSyncUseCase, closeDatabaseConnection } from "@roteirizador/backend";
+import { startSyncUseCase, closeDatabaseConnection } from "../index";
 
 async function startSync() {
   try {

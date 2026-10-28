@@ -28,7 +28,7 @@ jobs:
 
       - id: create
         run: |
-          ID=$(pnpm --filter web exec tsx --conditions react-server src/scripts/startSync.ts)
+          ID=$(pnpm --filter @roteirizador/backend exec tsx --conditions react-server src/scripts/startSync.ts)
           echo "sync_id=$ID" >> "$GITHUB_OUTPUT"
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
@@ -76,7 +76,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Executar sincronização de ${{ matrix.report }}
-        run: pnpm --filter web exec tsx --conditions react-server src/scripts/syncReports.ts ${{ matrix.report }}
+        run: pnpm --filter @roteirizador/backend exec tsx --conditions react-server src/scripts/syncReports.ts ${{ matrix.report }}
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
@@ -110,7 +110,7 @@ jobs:
       - name: Instalar dependências
         run: pnpm install --frozen-lockfile
 
-      - run: pnpm --filter web exec tsx --conditions react-server src/scripts/finishSync.ts ${{ needs.create-sync-history.outputs.sync_id }} ${{ needs.sync-reports.result }}
+      - run: pnpm --filter @roteirizador/backend exec tsx --conditions react-server src/scripts/finishSync.ts ${{ needs.create-sync-history.outputs.sync_id }} ${{ needs.sync-reports.result }}
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
