@@ -107,5 +107,8 @@ export {
   type SyncReportType
 };
 
+// Conexão e Banco
+export { closeDatabaseConnection } from "./db/connection";
+
 // Tipos
 export type * from "./types/dashboardOperationalMetrics";

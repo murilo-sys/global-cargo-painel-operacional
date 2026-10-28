@@ -1,4 +1,4 @@
-import { finishSyncUseCase } from "@roteirizador/backend";
+import { finishSyncUseCase, closeDatabaseConnection } from "@roteirizador/backend";
 
 async function finishSync() {
   const id = Number(process.argv[2]);
@@ -11,8 +11,11 @@ async function finishSync() {
 
   try {
     await finishSyncUseCase.execute(id, matrixResult);
+    await closeDatabaseConnection();
+    process.exit(0);
   } catch (error) {
     console.error("[CLI] Failed to update status for ID:", id, error);
+    await closeDatabaseConnection().catch(() => {});
     process.exit(1);
   }
 }

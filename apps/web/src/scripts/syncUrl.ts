@@ -1,4 +1,4 @@
-import { syncReportUseCase, type SyncReportType } from "@roteirizador/backend";
+import { syncReportUseCase, closeDatabaseConnection, type SyncReportType } from "@roteirizador/backend";
 
 const VALIDS_TYPES: SyncReportType[] = ["freights", "manifests", "pickups"];
 
@@ -22,9 +22,11 @@ async function main() {
     await syncReportUseCase.execute(reportType, url);
     const duration = ((Date.now() - startTime) / 1000).toFixed(2);
     console.log(`[CLI] Sync ${reportType} from URL completed successfully in ${duration}s.`);
+    await closeDatabaseConnection();
     process.exit(0);
   } catch (error) {
     console.error(`[CLI] Fatal error during sync of ${reportType} from URL:`, error);
+    await closeDatabaseConnection().catch(() => {});
     process.exit(1);
   }
 }
