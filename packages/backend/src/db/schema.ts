@@ -1,3 +1,4 @@
+import { sql, type SQL } from "drizzle-orm";
 import {
   pgTable,
   text,
@@ -23,7 +24,14 @@ export const freightsTable = pgTable("freights", {
   origin_hub: text("origin_hub"),
   status: text("status").notNull(),
   modal: text("modal").notNull(),
-  issuance_status: text("issuance_status").$defaultFn(() => ""),
+  issuance_status: text("issuance_status").generatedAlwaysAs(
+    (): SQL => sql`CASE
+      WHEN status = 'Manifestado' THEN 'Manifestado'
+      WHEN cte_number IS NOT NULL AND status IN ('Pendente', 'Standby') THEN 'Emitido'
+      WHEN cte_number IS NULL AND minute_number IS NULL AND status IN ('Pendente', 'Standby') THEN 'Pendente'
+      ELSE 'Outro'
+    END`
+  ),
   emission_type: text("emission_type").notNull(),
   freight_type: text("freight_type").notNull(),
   current_location: text("current_location"),
