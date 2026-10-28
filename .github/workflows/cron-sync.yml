@@ -31,6 +31,7 @@ jobs:
           ID=$(pnpm --filter web exec tsx --conditions react-server src/scripts/startSync.ts)
           echo "sync_id=$ID" >> "$GITHUB_OUTPUT"
         env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
@@ -77,6 +78,7 @@ jobs:
       - name: Executar sincronização de ${{ matrix.report }}
         run: pnpm --filter web exec tsx --conditions react-server src/scripts/syncReports.ts ${{ matrix.report }}
         env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
@@ -110,6 +112,7 @@ jobs:
 
       - run: pnpm --filter web exec tsx --conditions react-server src/scripts/finishSync.ts ${{ needs.create-sync-history.outputs.sync_id }} ${{ needs.sync-reports.result }}
         env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}

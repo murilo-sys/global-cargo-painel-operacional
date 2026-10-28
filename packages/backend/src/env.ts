@@ -1,5 +1,34 @@
-import "dotenv/config";
+import dotenv from "dotenv";
+import path from "node:path";
+import fs from "node:fs";
+import { fileURLToPath } from "node:url";
 import z from "zod";
+
+const currentFile = fileURLToPath(import.meta.url);
+const currentDir = path.dirname(currentFile);
+
+// Lista de diretórios possíveis onde os arquivos .env / .env.local podem estar no monorepo
+const searchDirs = [
+  process.cwd(),
+  path.resolve(process.cwd(), ".."),
+  path.resolve(process.cwd(), "../.."),
+  path.resolve(process.cwd(), "apps/web"),
+  path.resolve(process.cwd(), "packages/backend"),
+  path.resolve(currentDir, ".."),
+  path.resolve(currentDir, "../../.."),
+  path.resolve(currentDir, "../../../apps/web")
+];
+
+for (const dir of searchDirs) {
+  const envLocal = path.join(dir, ".env.local");
+  if (fs.existsSync(envLocal)) {
+    dotenv.config({ path: envLocal });
+  }
+  const envFile = path.join(dir, ".env");
+  if (fs.existsSync(envFile)) {
+    dotenv.config({ path: envFile });
+  }
+}
 
 const envSchema = z.object({
   DATABASE_URL: z.string().min(10, "DATABASE_URL invalid"),
