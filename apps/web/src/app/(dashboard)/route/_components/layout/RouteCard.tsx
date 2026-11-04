@@ -15,6 +15,16 @@ interface RouteCardProps {
 export default function RouteCard({ route }: RouteCardProps) {
   const [, formAction, isPending] = useActionState(deleteRouteAction, null);
 
+  const routeTotals = route.hubs.reduce(
+    (acc, hub) => ({
+      m3: acc.m3 + (hub.totalVolumeM3 || 0),
+      invoiceValue: acc.invoiceValue + (hub.totalInvoiceValue || 0),
+      realWeight: acc.realWeight + (hub.totalRealWeight || 0),
+      freightWeight: acc.freightWeight + (hub.totalFreightWeight || 0)
+    }),
+    { m3: 0, invoiceValue: 0, realWeight: 0, freightWeight: 0 }
+  );
+
   return (
     <div className="w-full bg-blue-900 rounded-xl py-5 px-6 flex flex-col gap-4 slide-in-from-bottom-5 animate-in fade-in duration-800">
       {/* Headers */}
@@ -54,7 +64,8 @@ export default function RouteCard({ route }: RouteCardProps) {
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-3 w-full">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 w-full">
+        {/* Cards Individuais dos Hubs */}
         {route.hubs.map((value) => (
           <div className="w-full" key={value.code}>
             <HubCard
@@ -67,6 +78,19 @@ export default function RouteCard({ route }: RouteCardProps) {
             />
           </div>
         ))}
+
+        {/* Card Totalizador da Rota (no final) */}
+        <div className="w-full">
+          <HubCard
+            code="TOTAL"
+            color="#0f172a"
+            realWeight={routeTotals.realWeight}
+            m3={routeTotals.m3}
+            invoiceValue={routeTotals.invoiceValue}
+            freightWeight={routeTotals.freightWeight}
+            disableLink
+          />
+        </div>
       </div>
     </div>
   );
