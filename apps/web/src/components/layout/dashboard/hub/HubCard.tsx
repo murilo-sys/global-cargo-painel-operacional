@@ -19,14 +19,6 @@ export default function HubCard(hub: HubCardProps) {
     >
       <p className="border-b-2 font-semibold text-xl">{hub.code}</p>
       <div className="flex flex-col gap-2">
-        {/* M3 */}
-        <div className="flex flex-row justify-between border-b border-dotted">
-          <span className="font-semibold">M³</span>
-          <span>
-            {hub.m3.toFixed(3)} <span className="text-xs font-semibold">M³</span>
-          </span>
-        </div>
-
         {/* Invoice value */}
         <div className="flex flex-row justify-between border-b border-dotted">
           <span className="font-semibold">R$</span>
@@ -36,6 +28,14 @@ export default function HubCard(hub: HubCardProps) {
               maximumFractionDigits: 2
             })}{" "}
             <span className="text-xs font-semibold">R$</span>
+          </span>
+        </div>
+
+        {/* M3 */}
+        <div className="flex flex-row justify-between border-b border-dotted">
+          <span className="font-semibold">M³</span>
+          <span>
+            {hub.m3.toFixed(3)} <span className="text-xs font-semibold">M³</span>
           </span>
         </div>
 
